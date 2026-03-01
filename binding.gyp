@@ -38,13 +38,15 @@
           ],
         }],
         ['OS == "mac"', {
+          'cflags_cc': ['-std=c++20'],
           'xcode_settings': {
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
+            'CLANG_CXX_LANGUAGE_STANDARD': 'c++20',
             'OTHER_CPLUSPLUSFLAGS': [
               '-std=c++20',
               '-Wconversion',
               '-Wno-sign-conversion',
-            ]
+            ],
           }
         }],
       ]
