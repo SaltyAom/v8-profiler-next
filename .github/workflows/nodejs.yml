@@ -6,13 +6,14 @@ on:
     branches: [ '**' ]
   schedule:
     - cron: '0 2 * * *'
+
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        node-version: [ 12, 14, 16, 18, 20 ]
+        node-version: [ 12, 14, 16, 18, 20, 22 ,24 ]
     steps:
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -23,21 +24,27 @@ jobs:
       uses: actions/checkout@master
 
     - name: Setup Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install Dependencies
-      run: npm i
+    - name: Setup bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Install packages
+      run: bun install
 
     - name: Continuous integration
-      run: npm run debug-test
+      run: bun run debug-test
+
   macos:
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        node-version: [ 12, 14, 16, 18, 20 ]
+        node-version: [ 12, 14, 16, 18, 20, 22, 24 ]
     steps:
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -48,12 +55,17 @@ jobs:
       uses: actions/checkout@master
 
     - name: Setup Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Setup bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
     - name: Install Dependencies
-      run: npm i
+      run: bun install
 
     - name: Continuous integration
-      run: npm run debug-test
+      run: bun run debug-test
